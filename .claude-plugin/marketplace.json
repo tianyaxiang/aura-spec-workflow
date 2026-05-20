@@ -1,0 +1,12 @@
+{
+  "name": "aura-spec-workflow",
+  "owner": {"name": "tianyaxiang"},
+  "description": "SPEC-driven workflow (Kiro-style requirements/design/tasks) for Claude Code",
+  "plugins": [
+    {
+      "name": "aura-spec-workflow",
+      "source": "./plugins/aura-spec-workflow",
+      "description": "Kiro-style SPEC tracking with auto-surface on session start"
+    }
+  ]
+}
