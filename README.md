@@ -2,6 +2,8 @@
 
 A Claude Code plugin that adds a Kiro-style SPEC workflow (requirements / design / tasks) with **auto-surface on session start**. The point is: a new Claude session can pick up where the last one left off without you having to remind it.
 
+English · [中文](./README_zh.md)
+
 ## What it does
 
 - **`SessionStart` hook** scans `docs/specs/*/tasks.md` in your project and prints active SPECs (with `done/total` counts and the next unchecked task) into Claude's context — every session, automatically.
