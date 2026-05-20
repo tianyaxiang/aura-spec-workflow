@@ -29,5 +29,5 @@ done
 echo "📋 Active SPECs in this repo:"
 printf '%s\n' "${lines[@]}"
 echo ""
-echo "Open docs/specs/<name>/tasks.md to update. Run /aura-spec-workflow:spec-status anytime."
+echo "Convention: after completing a task, use Edit to flip its \`[ ]\` to \`[x]\` in tasks.md — do not wait to be told. For partial progress, leave \`[ ]\` and append a brief note. Run /aura-spec-workflow:spec-status anytime."
 exit 0

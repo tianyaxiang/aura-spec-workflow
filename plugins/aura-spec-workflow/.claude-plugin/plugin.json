@@ -1,6 +1,6 @@
 {
   "name": "aura-spec-workflow",
   "description": "Auto-surface in-progress SPECs at session start; scaffold new specs via /aura-spec-workflow:spec.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {"name": "tianyaxiang"}
 }

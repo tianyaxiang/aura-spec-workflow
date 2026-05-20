@@ -20,7 +20,7 @@
 | 🤖 **SessionStart hook** | 插件 | 每次开会话 / `/clear` / 压缩后自动跑,无需触发 |
 | ⌨️ **Slash 命令** | 你 | 手敲 `/aura-spec-workflow:spec <name>` 或 `/aura-spec-workflow:spec-status` |
 | 💬 **填内容** | Claude 跟你对话写 | 你说要做什么 → Claude 写到三个 md 里;或你手写 |
-| ✏️ **改状态** | 你(或叫 Claude 帮你) | tasks.md 里把 `[ ]` 改成 `[x]`(手改或让 Claude 改) |
+| ✏️ **改状态** | Claude(默认自动)/ 你(可手动) | Claude 干完一条任务,会自动把 tasks.md 里 `[ ]` 翻成 `[x]`(由 SessionStart hook 注入的 convention 触发);你也可以手改或说"标 #N 完成" |
 
 要点:**插件只管"状态浮上来"+"骨架生成"。三件套的内容是你和 Claude 一起写出来的,不是插件凭空生成。**
 
@@ -57,7 +57,7 @@
 | 3 | 填 design | 让 Claude 进 plan mode(`/plan` 或说"先想清楚再动"),探索代码后说"把方案写到 design.md" | Claude 用 Explore subagent 看代码,写 components 表、数据模型、时序、风险 |
 | 4 | 拆 tasks | 说"把 design 拆成 10–20 条 tasks,每条 1 天能干完" | Claude 列出编号清单,你 review 增删 |
 | 5 | 执行 | 一次说一条:"做 #1"(或 Claude 自己看到 next 就开干) | Claude 改代码、跑测试、commit |
-| 6 | 标完成 | 手改 `[ ]` → `[x]`,或说"标 #1 为完成" | Claude 改 tasks.md(一行 edit) |
+| 6 | 标完成 | **通常不用动手** — Claude 会自动翻 checkbox;或手改 `[ ]` → `[x]`,或说"标 #1 为完成" | Claude 干完后调 Edit 工具改 tasks.md(由 SessionStart hook 注入的 convention 引导) |
 | 7 | 续(下一会话) | **什么也不用敲**,看输出 | 🤖 SessionStart hook 自动告诉 Claude "next: #2 xxx" |
 
 ---
@@ -128,15 +128,13 @@
 ```
 > 做 #1。
 
-[Claude 改代码,跑测试,可能 commit;干完报告]
-
-> 标 #1 完成。
-
-[Claude 把 tasks.md 里 "- [ ] 1. ..." 改成 "- [x] 1. ..."]
+[Claude 改代码,跑测试,可能 commit;干完后把 tasks.md 里 "- [ ] 1. ..." 自动改成 "- [x] 1. ..."]
 
 > 做 #2。
 …
 ```
+
+**关于自动标完成**:Claude 干完一条任务后,默认会自动翻 checkbox — 这条 convention 是 SessionStart hook 注入给它的。如果它忘了,或者只完成了一部分(留 `[ ]` + 补一行 note),你手改或说"标 #N 完成"即可。
 
 或者更简洁:
 
@@ -226,7 +224,7 @@ Claude 已经知道 #15 是什么,不需要你重新介绍 watchlist-extension �
 | 让 Claude 出 design | "进 plan mode 看相关代码,设计方案,然后写到 docs/specs/<name>/design.md" |
 | 让 Claude 拆 tasks | "把 design.md 拆成 tasks,每条 1–2 小时能干完 + 带验收点,写到 tasks.md" |
 | 执行下一条 | "看 spec-status,做 next 那条" |
-| 标完成 | "标 #N 完成" 或手改 `[ ]` → `[x]` |
+| 标完成 | 通常 Claude 自动翻(干完就改);如果它忘了,说"标 #N 完成"或手改 `[ ]` → `[x]` |
 | 查进度 | `/aura-spec-workflow:spec-status` |
 | 加临时任务 | "tasks.md 末尾追加一条:- [ ] N. xxx" |
 
